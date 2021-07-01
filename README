@@ -1,0 +1,16 @@
+library(RcetsaAPI)
+
+#add project:
+## demo data... replace this list with real data
+project=demo.project()
+print(project)
+add.project(project)
+
+#add experiment:
+## demo data... replace this list with real data
+experiment=demo.experiment()
+print(experiment)
+add.experiment(experiment)
+
+#list projects:
+list.projects()

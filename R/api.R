@@ -5,6 +5,11 @@ list.projects = function(){
 	httr::content(res)
 }
 
+list.experiments = function(projectid){
+	res=httr::GET(endpoint,query=list(q="experiment",id=projectid))
+	httr::content(res)
+}
+
 demo.project = function(){
 	list(name="new project",lab="some lab",project_type="what is a type?")
 }

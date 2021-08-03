@@ -13,4 +13,9 @@ print(experiment)
 add.experiment(experiment)
 
 #list projects:
-list.projects()
+p=list.projects()
+print(p)
+
+#list experiments under a given project (for development only... this will likely be removed at some point):
+## pass a projectID as an argument
+list.experiments(p$data[[1]]$projectID)

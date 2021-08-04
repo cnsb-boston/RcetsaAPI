@@ -16,8 +16,7 @@ demo.project = function(){
 
 add.project = function(data){
 	if(is.null(data)){
-		data=demo.project()
-		#todo error?
+		return(list(status="error",code="empty data"))
 	}
 	res=httr::POST(endpoint,body=list(q="project",data=data),encode="json")
 	#print(res)
@@ -30,8 +29,7 @@ demo.experiment = function(){
 
 add.experiment = function(data){
 	if(is.null(data)){
-		data=demo.experiment()
-		#todo error?
+		return(list(status="error",code="empty data"))
 	}
 	res=httr::POST(endpoint,body=list(q="experiment",data=data),encode="json")
 	#print(res)

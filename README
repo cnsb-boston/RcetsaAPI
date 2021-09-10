@@ -1,3 +1,8 @@
+#get.token() API credentials should be stored in the environment variables: CETSA_CLIENT and CETSA_SECRET but only if the shiny app is access restricted:
+#https://docs.rstudio.com/shinyapps.io/authentication-and-user-management.html
+#get.user.token(username,password) can be used for interactive authentication (prompt user for their username/password)
+#after calling one of these, the token will be stored internally and used for subsequent API calls
+
 library(RcetsaAPI)
 
 #add project:

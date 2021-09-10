@@ -1,5 +1,26 @@
 endpoint="https://www.bu.edu/dbin/cnsb/CETSA/api.php"
 
+.handle.token=function(rc){
+	if(is.null(rc$error)){
+		cetsa_token=rc$access_token
+		httr::set_config(httr::add_headers(Auth=paste("Bearer",rc$access_token)))
+		ret=list(status="ok")
+	} else {
+		ret=list(status="error",code=rc$error,description=rc$error_description)
+	}
+	ret
+}
+
+get.token = function(){
+	res=httr::POST(sub("api.php$","auth/login.php",endpoint),body=list(grant_type="client_credentials",client_id=Sys.getenv("CETSA_CLIENT"),client_secret=Sys.getenv("CETSA_SECRET")),encode="json")
+	.handle.token(httr::content(res))
+}
+
+get.user.token = function(username,password){
+	res=httr::POST(sub("api.php$","auth/login.php",endpoint),body=list(grant_type="password",username=username,password=password),encode="json")
+	.handle.token(httr::content(res))
+}
+
 list.projects = function(){
 	res=httr::GET(endpoint,query=list(q="project"))
 	httr::content(res)

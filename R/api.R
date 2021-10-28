@@ -45,8 +45,8 @@ add.project = function(data){
 }
 
 demo.experiment = function(){
-	list(projectID=1,experiment_type="what is a type?",done_by="Ryan",num_samples=2,num_replicates=2,assay_type="what is this?",concentration_range="1:10",temperature_range="1:10",organism="Human",run_date="2020-06-29",
-		results=data.frame(uniprot=c("Q13547","P69905"), drugbankID=c("DB06603","BUCMD001"), drugname=c("","CMD Alpha"), fold_change=c("0,0.004,-0.024,0.041,0.3,0.652,0.729,0.8,0.827,1","0,0.11,0.22,0.33,0.44,0.55,0.66,0.77,0.88,1.0"), conditions=c("cond a","cond b"), min_x=c(1,1), max_x=c(10,10), pEC50=c(7.468661,8.25465), slope=c(1.612325,2.16473), pvalue=c(0.01, 0.008), stringsAsFactors=F))
+	list(projectID=1,experiment_type="what is a type?",done_by="Ryan",num_samples=2,num_replicates=2,assay_type="CETSA",concentration_range="1:10",temperature_range="1:10",organism="Human",run_date="2020-06-29",
+		results=data.frame(uniprot=c("Q13547","P69905"), drugbankID=c("DB06603","BUCMD001"), drugname=c("","CMD Alpha"), fold_change=c("0,0.004,-0.024,0.041,0.3,0.652,0.729,0.8,0.827,1","0,0.11,0.22,0.33,0.44,0.55,0.66,0.77,0.88,1.0"), conditions=c("cond a","cond b"), min_x=c(-15,-15), max_x=c(0,0), pEC50=c(7.468661,8.25465), slope=c(1.612325,2.16473), pvalue=c(0.01, 0.008), stringsAsFactors=F))
 }
 
 add.result = function(data){

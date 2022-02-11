@@ -46,7 +46,7 @@ add.project = function(data){
 
 demo.experiment = function(){
 	list(projectID=1,experiment_type="what is a type?",done_by="Ryan",num_samples=2,num_replicates=2,assay_type="CETSA",concentration_range="1:10",temperature_range="1:10",organism="Human",run_date="2020-06-29",
-		results=data.frame(uniprot=c("Q13547","P69905"), drugbankID=c("DB06603","BUCMD001"), drugname=c("","CMD Alpha"), fold_change=c("0,0.004,-0.024,0.041,0.3,0.652,0.729,0.8,0.827,1","0,0.11,0.22,0.33,0.44,0.55,0.66,0.77,0.88,1.0"), conditions=c("cond a","cond b"), min_x=c(-15,-15), max_x=c(0,0), pEC50=c(7.468661,8.25465), slope=c(1.612325,2.16473), pvalue=c(0.01, 0.008), stringsAsFactors=F))
+		results=data.frame(uniprot=c("Q13547","P69905"), drugbankID=c("DB06603","BUCMD001"), drugname=c("","CMD Alpha"), fold_change=c("0,0.004,-0.024,0.041,0.3,0.652,0.729,0.8,0.827,1","0,0.11,0.22,0.33,0.44,0.55,0.66,0.77,0.88,1.0"), conditions=c("cond a","cond b"), min_x=c(-15,-15), max_x=c(0,0), pEC50=c(7.468661,8.25465), slope=c(1.612325,2.16473), pvalue=c(0.01, 0.008), inchikey=c("FPOHNWQLNRZRFC-ZHACJKMWSA-N","BURAIKRKMDXXHD-CVEARBPZSA-N"), stringsAsFactors=F))
 }
 
 add.result = function(data){
@@ -73,8 +73,18 @@ add.experiment = function(data){
 
 		drugbank=read.csv(system.file("extdata", "drugbank.tsv", package="RcetsaAPI"),sep="\t",stringsAsFactors=F)
 		results=merge(results,drugbank,by.x="drugbankID",by.y="id",all.x=T)
+
 		i=!is.na(results$drugbankname)
 		results$drugname[i]=results$drugbankname[i]
+
+		di=which(colnames(results)=="dbinchikey")
+		if(is.null(results$inchikey)){
+			colnames(results)[di]="inchikey"
+		} else {
+			i=results$inchikey==""
+			results$inchikey[i]=results$dbinchikey[i]
+		}
+		results=results[,-di]
 
 		res_content=lapply(1:nrow(results),FUN=function(i) add.result(as.list(results[i,])))
 		status=unlist(sapply(res_content,"[","status"))

@@ -45,8 +45,8 @@ add.project = function(data){
 }
 
 demo.experiment = function(){
-	list(projectID=1,experiment_type="what is a type?",done_by="Ryan",num_samples=2,num_replicates=2,assay_type="CETSA",concentration_range="1:10",temperature_range="1:10",organism="Human",run_date="2020-06-29",
-		results=data.frame(uniprot=c("Q13547","P69905"), drugbankID=c("DB06603","BUCMD001"), drugname=c("","CMD Alpha"), fold_change=c("0,0.004,-0.024,0.041,0.3,0.652,0.729,0.8,0.827,1","0,0.11,0.22,0.33,0.44,0.55,0.66,0.77,0.88,1.0"), conditions=c("cond a","cond b"), min_x=c(-15,-15), max_x=c(0,0), pEC50=c(7.468661,8.25465), slope=c(1.612325,2.16473), pvalue=c(0.01, 0.008), inchikey=c("FPOHNWQLNRZRFC-ZHACJKMWSA-N","BURAIKRKMDXXHD-CVEARBPZSA-N"), stringsAsFactors=F))
+	list(projectID=1,experiment_type="what is a type?",done_by="Ryan",num_samples=2,num_replicates=2,assay_type="CETSA",concentration_range="1,2,3,4,5,6,7,8,9",temperature_range="",organism="Human",run_date="2020-06-29",
+		results=data.frame(uniprot=c("Q13547","P69905"), drugbankID=c("DB06603","BUCMD001"), drugname=c("","CMD Alpha"), fold_change=c("0,0.004,-0.024,0.041,0.3,0.729,0.8,0.827,1","0,0.11,0.22,0.33,0.44,0.55,0.77,0.88,1.0"), conditions=c("cond a","cond b"), min_x=c(-15,-15), max_x=c(0,0), pEC50=c(7.468661,8.25465), slope=c(1.612325,2.16473), pvalue=c(0.01, 0.008), inchikey=c("FPOHNWQLNRZRFC-ZHACJKMWSA-N","BURAIKRKMDXXHD-CVEARBPZSA-N"), stringsAsFactors=F))
 }
 
 add.result = function(data){
@@ -62,8 +62,23 @@ add.experiment = function(data){
 	if(is.null(data)){
 		return(list(status="error",code="empty data"))
 	}
+	target_numfc=Reduce(`*`,lapply(strsplit(c(data$temperature_range,data$concentration_range),","),
+								   FUN=function(i) if(length(i)==0) 1 else length(i)))
 	if(!is.null(data$results)){
 		results=data$results
+		need=colnames(demo.experiment()$results)
+		have=colnames(results)
+		missing=need[!(need %in% have)]
+		if(length(missing)>0){
+			if(length(missing)==1 && missing=="inchikey"){
+				warning("inchikey column missing from results. inchikeys will be generated using the drugbankID, if possible")
+			}
+			return(list(status="error",code=paste("missing column(s):",paste0(missing,collapse=" "))))
+		}
+		numfc=unique(sapply(strsplit(results$fold_change,","),length))
+		if(length(numfc)!=1 || numfc!=target_numfc){
+			warning(paste0("Expected ",target_numfc," fold changes; found results containing: ",paste0(numfc,collapse=", ")))
+		}
 	}
 	exp_res=httr::POST(endpoint,body=list(q="experiment",data=data),encode="json")
 	exp_content=httr::content(exp_res)

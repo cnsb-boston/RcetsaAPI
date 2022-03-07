@@ -4,7 +4,8 @@ endpoint="https://www.bu.edu/dbin/cnsb/CETSA/api.php"
 	if(is.null(rc$error)){
 		cetsa_token=rc$access_token
 		httr::set_config(httr::add_headers(Auth=paste("Bearer",rc$access_token)))
-		ret=list(status="ok")
+		res=httr::POST(endpoint,body=list(q="testauth",scope="privatedata"),encode="json")
+		ret=httr::content(res)
 	} else {
 		ret=list(status="error",code=rc$error,description=rc$error_description)
 	}

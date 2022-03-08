@@ -114,3 +114,11 @@ add.experiment = function(data){
 
 	exp_content
 }
+
+add.file = function(eid, fname){
+	uf=httr::upload_file(fname)
+	body=list(file=uf)
+	res=httr::POST(paste0(endpoint,"?q=experiment-file&id=",as.integer(eid)),body=body)
+	httr::content(res)
+}
+

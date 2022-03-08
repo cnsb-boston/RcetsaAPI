@@ -15,7 +15,10 @@ add.project(project)
 ## demo data... replace this list with real data
 experiment=demo.experiment()
 print(experiment)
-add.experiment(experiment)
+exp_ret = add.experiment(experiment)
+
+#add a file (results spreadsheet, image, etc) to an experiment
+add.file(eid=exp_ret$ID, fname="/tmp/plot.png")
 
 #list projects:
 p=list.projects()

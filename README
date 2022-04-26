@@ -17,8 +17,13 @@ experiment=demo.experiment()
 print(experiment)
 exp_ret = add.experiment(experiment)
 
-#add a file (results spreadsheet, image, etc) to an experiment
-add.file(eid=exp_ret$ID, fname="/tmp/plot.png")
+#confirm that a file has not been previously uploaded
+# this will return a list of files in the database with a matching hash of the one specified here
+matched_files = check.file(fname="/tmp/plot.png")
+if(matched_files$status=="ok" && length(matched_files$data)==0){
+  #add a file (results spreadsheet, image, etc) to an experiment
+  add.file(eid=exp_ret$ID, fname="/tmp/plot.png")
+}
 
 #list projects:
 p=list.projects()

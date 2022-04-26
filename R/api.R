@@ -115,6 +115,11 @@ add.experiment = function(data){
 	exp_content
 }
 
+check.file = function(fname){
+	res=httr::GET(paste0(endpoint,"?q=file-hash&hash=",digest::digest(fname, algo="sha256", file=T)))
+	httr::content(res)
+}
+
 add.file = function(eid, fname){
 	uf=httr::upload_file(fname)
 	body=list(file=uf)
